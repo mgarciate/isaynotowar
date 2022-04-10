@@ -3,6 +3,7 @@
 pragma solidity ^0.8.0;
 
 import "./ERC721.sol";
+import "./ERC20.sol";
 import "./utils/Base64.sol";
 
 /*
@@ -42,10 +43,10 @@ contract TheSignature is ERC721 {
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
-        string memory name = "The Signature"; 
-        string memory description = "A conceptual art project that emphasises the provenance of an NFT. All pieces look the same. Anyone can mint a piece at any time (only pay gas). No restrictions. Uncapped supply. The only way they differ is when it was minted and by whom. Over time, if transferred, a piece will attract more signatures from more holders.";
+        string memory name = "I say no to War"; 
+        string memory description = "I say no to war is a project inspired and forked from the conceptual art project The Signatures by Simon de la Rouviere. It's not only aimed to raise funds for the humanitarian action of Unchain.fund to relieve our Ukrainian brothers and sisters suffering, but to be the first web3 signatures collection, against war, and show the world a massive amount of inmutable signatures as onchain svg's forever in the Ethereum blockchain. There is no capped supply as opposition to war should not have a cap, everyone can mint their proofs of opposition to war just paying the gas or attach an amount in ETH to unchain's fund ETH multisig, hardcoded in the NFT contract. As in Simon's project , the importance of provenance and date in NFT's is what is really meaningful not the image itselt , and in this case stamping our big no to war forever.";
 
-        string memory image = generateBase64Image();
+        string memory imageUrl = "https://ipfs.io/ipfs/QmdeVeLGtZmw6TFU3PzK5CQ4YK1Za3hACdFZj7ugwdEYmA";
         return string(
             abi.encodePacked(
                 'data:application/json;base64,',
@@ -56,9 +57,8 @@ contract TheSignature is ERC721 {
                             name,
                             '", "description":"', 
                             description,
-                            '", "image": "', 
-                            'data:image/svg+xml;base64,', 
-                            image,
+                            '", "image": "',
+                            imageUrl,
                             '"}'
                         )
                     )
@@ -96,4 +96,26 @@ contract TheSignature is ERC721 {
         uint256 tokenId = uint(keccak256(abi.encodePacked(block.timestamp, _owner)));
         super._mint(_owner, tokenId);
     }
+
+    /// @notice The `escapeHatch()` should only be called as a last resort if a
+    /// security issue is uncovered or something unexpected happened
+    /// @param _token to transfer, use 0x0 for ether
+    function escapeHatch(address _token) public {
+        uint256 balance;
+
+        /// @dev Logic for ether
+        if (_token == address(0x0)) {
+            balance = address(this).balance;
+            _recipient.transfer(balance);
+            emit EscapeHatchCalled(_token, balance);
+            return;
+        }
+        /// @dev Logic for tokens
+        ERC20 token = ERC20(_token);
+        balance = token.balanceOf(address(this));
+        require(token.transfer(_recipient, balance),"err_escapableTransfer");
+        emit EscapeHatchCalled(_token, balance);
+    }
+
+    event EscapeHatchCalled(address token, uint amount);
 }

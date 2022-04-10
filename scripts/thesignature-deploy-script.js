@@ -15,7 +15,7 @@ async function main() {
 
   // We get the contract to deploy
   const TheSignature = await hre.ethers.getContractFactory("TheSignature");
-  const theSignature = await TheSignature.deploy("TheSignature", "TSIG");
+  const theSignature = await TheSignature.deploy("I say no to War", "NOWAR");
 
   await theSignature.deployed();
 
