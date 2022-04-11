@@ -1,7 +1,7 @@
 {
-  "name": "thesignature",
+  "name": "isaynotowar",
   "version": "1.0.0",
-  "description": "thesignature description",
+  "description": "I say no to war is a project inspired and forked from the conceptual art project The Signatures by Simon de la Rouviere. It's not only aimed to raise funds for the humanitarian action of Unchain.fund to relieve our Ukrainian brothers and sisters suffering, but to be the first web3 signatures collection, against war, and show the world a massive amount of inmutable signatures as onchain svg's forever in the Ethereum blockchain.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -14,6 +14,10 @@ module.exports = {
   networks: {
     hardhat: {
     },
+    mainnet: {
+      url: `${MAINNET_URL}`,
+      accounts: [`${PRIVATE_KEY}`],
+    },
     goerli: {
       url: `${GOERLI_URL}`,
       accounts: [`${PRIVATE_KEY}`],
